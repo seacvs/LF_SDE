@@ -19,10 +19,10 @@ public class Simon extends Application{
 		
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Simon Dice y Evalua");
+		primaryStage.setMaxHeight(1400);
+		primaryStage.setMaxWidth(1500);
+		primaryStage.centerOnScreen();		
+		primaryStage.setFullScreen(false);		
 		primaryStage.show();		
 	}
-	
-	
-	
-
 }

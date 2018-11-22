@@ -14,9 +14,9 @@
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyecto.LF_SDE.Controller">
    <top>
-      <HBox prefHeight="80.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="80.0" prefWidth="200.0" BorderPane.alignment="CENTER" fx:id="hBoxTitle">
          <children>
-            <Label fx:id="title" alignment="CENTER" prefHeight="80.0" prefWidth="350.0" text="Simon Dice y Evalua" textAlignment="CENTER" textFill="#006823" textOverrun="CLIP" wrapText="true">
+            <Label fx:id="title" alignment="CENTER" prefHeight="80.0" prefWidth="350.0" text="Simon Dice y Evalua" textAlignment="CENTER" textFill="#FFFFFF" textOverrun="CLIP" wrapText="true">
                <HBox.margin>
                   <Insets bottom="10.0" left="500.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -27,7 +27,7 @@
                   <Font name="Tw Cen MT Condensed Extra Bold" size="37.0" />
                </font>
             </Label>
-            <Button fx:id="info"  mnemonicParsing="false" prefHeight="15.0" prefWidth="50.0" text="Info">
+            <Button fx:id="info"  mnemonicParsing="false" prefHeight="15.0" prefWidth="50.0" text="Info" onAction="#infoBtn">
                <HBox.margin>
                   <Insets bottom="5.0" left="400.0" right="10.0" top="60.0" />
                </HBox.margin>
@@ -36,10 +36,8 @@
       </HBox>
    </top>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </BorderPane.margin>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" fx:id="vBoxCenter">
+     
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
@@ -52,7 +50,7 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
                <children>
-                  <Label fx:id="cadena" text="Cadena" textFill="#006823">
+                  <Label fx:id="cadena" text="Cadena" textFill="#738393">
                      <HBox.margin>
                         <Insets left="10.0" right="15.0" />
                      </HBox.margin>
@@ -137,7 +135,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button fx:id="play" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Jugar" textFill="#006823" focusTraversable="true" onAction="#play" onMouseEntered="#overButton" onMouseExited="#exitButton">
+                  <Button fx:id="play" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Jugar" textFill="#738393" focusTraversable="true" onAction="#play" onMouseEntered="#overButton" onMouseExited="#exitButton">
                      <FlowPane.margin>
                         <Insets bottom="10.0" left="50.0" right="10.0" top="10.0" />
                      </FlowPane.margin>
