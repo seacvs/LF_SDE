@@ -3,8 +3,6 @@ package proyecto.LF_SDE;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 
-import practica2.Equ;
-
 public class AFD {
 
 	public static int trans = 42; //cantidad de elemntos en la matriz estados * alfabeto
@@ -31,11 +29,10 @@ public class AFD {
 				tabla[i][j]= error;
 			}
 		}
-		// System.out.println("Inicial\n"+imprimirTabla(this.tabla));
 	}
 	
 	public void agregarTransiciones(String secuencia, int round){//funcion para agregar transiciones al automata,
-		System.out.println("secuencia "+secuencia+" ronda "+round);
+		System.out.println("secuencia "+secuencia.substring(0, round)+" ronda "+round);
 		ronda=round;
 		for(int i = 1; i< round; i++){							// agrega la transicion ala tabla de transiciones
 			int estado = Integer.parseInt(secuencia.substring(i-1, i));
@@ -44,18 +41,18 @@ public class AFD {
 			System.out.println("Recibio "+ estado+" -> " + simbolo);
 		}
 ///////////////////////////////MINIMIZACION///////////////////////////////////////////////////
-		System.out.println(imprimirTabla(tabla));
+		System.out.println("Tabla Transiciones : "+imprimirTabla(tabla));
 		int finalTemp = Integer.parseInt(secuencia.substring(round-1, round));
 		int inicialTemp = Integer.parseInt(secuencia.substring(0,1));
 		Minimizador min = new Minimizador(tabla, finalTemp, inicialTemp );
 		tablaMin = new int[Minimizador.nombres.length][alf];
 		tablaMin = Minimizador.tablaMin;
-		System.out.println(imprimirTabla(tablaMin));
+		System.out.println("Tabla Transiciones Minimizada: "+imprimirTabla(tablaMin));
 		names = Minimizador.nombres;
 		int p=0;
 		for(String s: names){
 			if(s!=null){
-			System.out.println("Nombres en AFD: ["+p+"] "+s);
+			System.out.println("Nombres en AFD: ["+p+"]  elementos =  "+s);
 			p++;
 			}
 		}
@@ -63,7 +60,7 @@ public class AFD {
 	}
 	
 	public String imprimirTabla(int[][] t){//imprime la tabla de transiciones para verificar
-		String s="Tabla:";					// que las transiciones sean correctas
+		String s="";					// que las transiciones sean correctas
 		for(int i=0; i<t.length; i++){
 			s+="\n";
 			for(int j=0; j< t[0].length; j++)
@@ -106,8 +103,6 @@ public class AFD {
 									// elementos del alfabeto
 				System.out.print("validando estado " + actual + " , " + dato + ":");
 				int estadoSiguiente = siguiente(actual, dato);
-				//if(estadoSiguiente== 6)//se fue a error
-				//	return false;
 				actual = estadoSiguiente; // obtiene el siguiente estado
 				System.out.println(" -> " + actual);
 			} else {
@@ -116,18 +111,6 @@ public class AFD {
 			}
 		}
 		return esFinal(actual);// estado final
-	}
-
-	private static String encontrarDatoMin(String dato) {
-		for(int j=0; j< names.length; j++){
-			String n = names[j];
-			for (int i = 0; i < n.length()-1; i++) {
-				int tempo = Integer.parseInt(n.substring(i, i + 1));
-				if (Integer.valueOf(dato) == tempo)
-					return String.valueOf(tempo);
-			}
-		}
-		return "error";
 	}
 
 	// funcion para saber cual es estado resultante, obteniendo la posicion x de
@@ -200,13 +183,15 @@ public class AFD {
 		System.out.println("Usuario "+cadenaUsuario);
 		return resultado;
 	}
+	
+	//como la tabla de transiciones esta minimizada, esta funcion sirve para cambiar el numero del boton 
+	//presionado por el indice en la tabla minmizada.
 	private static String convertirCadena(String w) {
 		String w2="";
 		for(int i=0; i<w.length(); i++){
 			w2 += String.valueOf(findStateMin(Integer.parseInt(w.substring(i, i + 1))));
 			System.out.println("w["+i+"] = "+w.substring(i, i + 1)+" - w2 = "+w2.substring(i, i + 1));
 		}
-		
 		return w2;
 	}
 
@@ -215,6 +200,4 @@ public class AFD {
 		cadenaUsuario="";
 		cadenaSimon="";
 	}
-	
-	
 }

@@ -1,30 +1,6 @@
 package proyecto.LF_SDE;
-
-
-
-
-//////////////////////////// OBTENER T - CHECAR FUNCION
-
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.swing.JOptionPane;
-
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 
 public class Minimizador {
 	public static int trans = 42; //elemntos en la matriz estados * alfabeto
@@ -61,53 +37,17 @@ public class Minimizador {
 	public static int obtenerT(int q, int a) {
 		return tabla[q][a];
 	}
-
-	
-	//funcion para ordenar las clases de qeuivalencia, asi las etiquetas ya quedan en orden
-	private void orderEqu() {
-		Equ[] tempEqu = clasesEqu.clone();
-		Equ[] resEqu =  new Equ[tempClases];
-		for(int i=0; i< tempClases; i++){
-			resEqu[i] = new Equ();
-		}
-		int value = 0;
-		int resi=0;
-		boolean flag=false;;
-		for(int i=0; i< tempClases; i++ ){
-			flag=false;
-			if(value >= est)
-				break;
-			if(tempEqu[i].findElement(value)){
-				for(int x=0; x<resEqu.length; x++){
-					if(resEqu[x].name.equals(tempEqu[i].name))
-						flag=true;
-				}
-				if(flag){
-					value++;
-					i=-1;
-					continue;
-				}else{
-					resEqu[resi]= tempEqu[i];
-					i=-1;
-					value++;
-					resi++;
-				}
-			}
-		}
-		clasesEqu=resEqu;
-	}
-	
 	
 	// funcion para obtener los resultados, hacer las transiciones y imprimir
 	// cada transicion final, todo se concatena a un string final
 	private static void res() {
 		tablaMin=new int[tempClases][alf];
-		System.out.print("\nOrden de la tabla minimizada\n");
+		//System.out.print("\nOrden de la tabla minimizada\n");
 		int c=0;
 		for (Equ e : clasesEqu){
 			if(e!= null){
 				nombres[c]=e.name;
-			System.out.print(e.name + "  ");
+			//System.out.print(e.name + "  ");
 			c++;
 			}
 		}
@@ -120,7 +60,7 @@ public class Minimizador {
 					int p = Integer.parseInt(String.valueOf(clasesEqu[i].name.charAt(0)));
 					results[i] += "( " + clasesEqu[i].name + " ," + alfabeto[q] + " ) ---> " + findClass(obtenerT(p, q))+ "\n";
 					tablaMin[i][Integer.valueOf(alfabeto[q])] =  findClassIterator(obtenerT(p, q));
-					System.out.println("PRUEBAS: "+clasesEqu[i].name  +"  tablaMin["+i+"]["+Integer.valueOf(alfabeto[q])+ ")] = "+ findClassIterator(obtenerT(p, q)));
+					//System.out.println("PRUEBAS: "+clasesEqu[i].name  +"  tablaMin["+i+"]["+Integer.valueOf(alfabeto[q])+ ")] = "+ findClassIterator(obtenerT(p, q)));
 			}
 		}
 
@@ -151,16 +91,6 @@ public class Minimizador {
 		
 		System.out.println(finalStr);
 		//JOptionPane.showMessageDialog(null, finalStr, "Resultados del AFD reducido", 1);
-		
-		/*tablaMin= new int [tempClases][alf];
-		for(int i=0; i< tempClases; i++){
-			for(int j=0; j<alf; j++){
-				tablaMin[i][j]=findClassIterator(obtenerT(i,j));
-				System.out.println("TABLAMIN: +["+i+", "+j+"]"+tablaMin[i][j]+ clasesEqu[i].name);
-
-			}
-		}
-		*/
 		
 	}
 
@@ -290,7 +220,6 @@ public class Minimizador {
 		int contadorIguales = 0;
 		int estDiferente = -1;
 		String strDif = "";
-
 		// si el estado de la clase, pertenece a su misma clasecontinuea, sino
 		// se pone el nombre del que no pertenece
 		for (int i = 0; i < trans.length; i++) {
@@ -304,7 +233,6 @@ public class Minimizador {
 					contadorIguales++;
 					if (strDif.indexOf(eq.name.substring(i / alf, (i / alf) + 1)) == -1)
 						strDif += eq.name.substring(i / alf, (i / alf) + 1);
-					;
 				}
 				resultados[i] = "odd"; // valor de p, no la transicion
 			}
@@ -327,11 +255,8 @@ public class Minimizador {
 				clasesResultantes[1] = resultados[k];
 				clasesEqu[claseEquiID] = new Equ();// se removio el estado que
 													// no pertenecia a la clase
-				clasesEqu[claseEquiID].setArrayElement(clasesResultantes[0]);// los
-																				// elementos
-																				// de
-																				// la
-																				// clase
+				clasesEqu[claseEquiID].setArrayElement(clasesResultantes[0]);
+				// los elementos de la clase
 				createEquClass(clasesResultantes[1]);// agrega una neuva clase
 														// al final de la ultima
 				repeat = true;// hubo cambios por lo que se debe volver a
@@ -343,7 +268,7 @@ public class Minimizador {
 
 	public Minimizador(int tab[][], int estFinal, int estInicial) {
 		super();
-		repeat=true;
+		repeat=true;//volvemos a iniciar la minimización
 		tempClases=0;
 		tabla=tab;
 		intFinal= estFinal;
@@ -353,11 +278,7 @@ public class Minimizador {
 		while (repeat)// se repite hasta que no haya cambios, en las clases de
 			reducir(); // esas clases creadas, se comprueban sus transiciones y
 					// se reduce las veces que se dividan las clases de quivalencia
-		nombres=new String[tempClases];		
-		//orderEqu();
-		res();
+		nombres=new String[tempClases];//con estos nombres, sabremos que elementos pertenecen
+		res();							// a que columna de la tabla minimizada
 	}
-
-	
 }
-

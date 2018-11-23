@@ -14,30 +14,18 @@ import javafx.scene.layout.VBox;
 
 public class Controller implements Initializable {
 	
-	@FXML
-	private RadioButton rb[] = new RadioButton[50];
-	@FXML
-	private Button btn_0;
-	@FXML
-	private Button btn_1;
-	@FXML
-	private Button btn_2;
-	@FXML
-	private Button btn_3;
-	@FXML
-	private Button btn_4;
-	@FXML
-	private Button btn_5;
-	@FXML
-	private Button play;
-	@FXML
-	private Button info;
-	@FXML
-	private HBox hboxrb;
-	@FXML
-	private HBox hBoxTitle;
-	@FXML
-	private VBox vBoxCenter;
+	@FXML private RadioButton rb[] = new RadioButton[50];
+	@FXML private Button btn_0;
+	@FXML private Button btn_1;
+	@FXML private Button btn_2;
+	@FXML private Button btn_3;
+	@FXML private Button btn_4;
+	@FXML private Button btn_5;
+	@FXML private Button play;
+	@FXML private Button info;
+	@FXML private HBox hboxrb;
+	@FXML private HBox hBoxTitle;
+	@FXML private VBox vBoxCenter;
 
 	public String[] mColors = { "#39add1", "#3079ab", "#c25975", "#e15258", "#f9845b", "#838cc7", "#7d669e", "#53bbb4",
 			"#51b46d", "#e0ab18", "#637a91", "#f092b0", "#b7c0c7", "#449353", "#b5ddbd", "#4f7cac", "#80e4ed",
@@ -48,16 +36,15 @@ public class Controller implements Initializable {
 	private String btnColors[] = new String[6];
 	private int[] finalSequence = new int[50];
 	private int[] userSequence = new int[50];
-	private String strFinal = "", strUser = "";
+	private String strFinal = "";
 	String instrucciones = "Simón es un juego educativo para probar el ingenio, los reflejos y la memoria.Un desafío permanente al azar, la habilidad y la observación.\n"+
 							"A cada jugada mostrará un color nuevo que tú tendrás que repetir siempre desde el principio en el mismo orden formando una cadena de colores"+
-							"\nPara ello harás clic con el ratón en el color adecuado, tratando de repetir la secuencia de Simón, y al final de cada ronda un AFD evaluara si la secuecnia ingresada"+
+							"\nPara ello harás clic con el ratón en el color adecuado, tratando de repetir la secuencia de Simón, y al final de cada ronda un AFD evaluara si la secuencia ingresada"+
 							" fue la correcta.";
 	AFD afd;
 	private int perRound=1;
 
-
-	@Override
+	@Override//funcion inicialq que da colores, crea los radioButtons y acomoda los contenedores
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		hBoxTitle.setStyle("-fx-background-color: #738393");
 		vBoxCenter.setStyle("-fx-background-color: #E5F1F9");
@@ -69,19 +56,6 @@ public class Controller implements Initializable {
 			hboxrb.getChildren().add(rb[i]);
 		}
 		startColor();
-
-	}
-
-	private void refreshRadioBtns() {
-		for (int i = 0; i < 50; i++) {
-			rb[i].setSelected(false);
-			rb[i].setStyle("");
-			rb[i].setVisible(true);
-
-		}
-		for (int i = 49; i >= round; i--) {
-			rb[i].setVisible(false);
-		}
 	}
 
 		//Funcion inicial donde se solo se ejecuta la primera vez para crear la secuencia, colores, inicializar las cadenas 
@@ -90,7 +64,6 @@ public class Controller implements Initializable {
 		afd= new AFD();
 		afd.inicializarTransiciones(); //llena los estados hacia el error, ya que no hay transiciones aun.
 		strFinal = "";
-		strUser = "";
 		afd.limpiar();
 		userSequence = new int[50];
 		finalSequence = new int[50];
@@ -111,7 +84,6 @@ public class Controller implements Initializable {
 	// se agregan las nuevas transiciones como vamos avanzando de ronda, se actualizan los radiobuttons que marcan la ronda actual
 	// y muestra la secuencia.
 	private void repeat() {
-		strUser = "";
 		afd= new AFD();
 		afd.inicializarTransiciones();
 		afd.limpiar();
@@ -131,24 +103,25 @@ public class Controller implements Initializable {
 	//Función generadora de secuencia, de numero random entre 0-5
 	private void createSequence() {
 		
-	/*	Random random = new Random(); //crea la secuencia y la guarda en la variable de la clase
+		Random random = new Random(); //crea la secuencia y la guarda en la variable de la clase
 		for (int i = 0; i < 50; i++) { // strFinal donde se enviara al AFD, desde la funcion 
 			int r =  random.nextInt(((5 - 0)) + 1); // de la clase AFD, AFD.agregartransiciones(secuencia, ronda actual)
 			finalSequence[i] = r;
 			strFinal += String.valueOf(r);
 		}
-	*/
+	
 		
-		
+		/*
 		int r[]= {1,2,3,4,5,4,3,2,1,0,1,2,3,4,5,4,3,2,1,0,1,2,3,4,5,4,3,2,1,0,1,2,3,4,5,4,3,2,1,0,1,2,3,4,5,4,3,2,1,0};
 		for(int i=0; i<50; i++){
 			finalSequence[i] = r[i];
 			strFinal += String.valueOf(r[i]);
 		}
+		*/
 	}
 
 	private void showSequence()throws InterruptedException  {
-		System.out.print("\nRonda " + round + " : ");
+		System.out.print("\nRonda " + round + " : \n");
 		Thread t1=new Thread();
 			 t1= new Thread(()->{
 				for (int i = 0; i < round; ++i){ 
@@ -210,7 +183,6 @@ public class Controller implements Initializable {
 			String s = event.getPickResult().getIntersectedNode().getId();
 			int number = Integer.parseInt(s.substring(4));
 			userSequence[counter] = number;
-			strUser += number;
 			afd.addCadenaUsuario(String.valueOf(number));
 			fillRadioButtons(number);
 			counter++;
@@ -239,6 +211,17 @@ public class Controller implements Initializable {
 		}
 	}
 
+	private void refreshRadioBtns() {
+		for (int i = 0; i < 50; i++) {
+			rb[i].setSelected(false);
+			rb[i].setStyle("");
+			rb[i].setVisible(true);
+
+		}
+		for (int i = 49; i >= round; i--) {
+			rb[i].setVisible(false);
+		}
+	}
 	private void fillRadioButtons(int s) {
 		if (counter <= 50) {
 			rb[counter].setSelected(true);
@@ -275,14 +258,11 @@ public class Controller implements Initializable {
 		btn_5.setOpacity((btn_5.getId().equals(s)) ? op : 1);
 		play.setOpacity((play.getId().equals(s)) ? op-.15 : 1);
 	}
-	
-	
-	
 
 	@FXML
 	private void overButton(MouseEvent event) {
 		String s = event.getPickResult().getIntersectedNode().getId();
-		changeColor(s,0.80);
+		changeColor(s,0.50);
 	}
 
 	@FXML
